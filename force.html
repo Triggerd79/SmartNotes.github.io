@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>YourNotes - force </title>
+
+	<!-- Bootstrap CSS -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+
+	<!-- custom css  -->
+	<style>
+		:root {
+			--opacity: 0;
+		}
+
+		/* Switch starts here */
+		.rocker {
+			display: inline-block;
+			position: relative;
+			font-size: 30px;
+			font-weight: bold;
+			text-align: center;
+			text-transform: uppercase;
+			color: #888;
+			width: 7em;
+			height: 4em;
+			overflow: hidden;
+			border-bottom: 0.5em solid #eee;
+		}
+
+		.rocker-small {
+			font-size: 8px;
+			/* Sizes the switch */
+			margin: 1em;
+		}
+
+		.rocker::before {
+			content: "";
+			position: absolute;
+			top: 0.5em;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			background-color: #999;
+			border: 0.5em solid #eee;
+			border-bottom: 0;
+		}
+
+		.rocker input {
+			opacity: 0;
+			width: 0;
+			height: 0;
+		}
+
+		.switch-left,
+		.switch-right {
+			cursor: pointer;
+			position: absolute;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			height: 2.5em;
+			width: 3em;
+			transition: 0.2s;
+			user-select: none;
+		}
+
+		.switch-left {
+			height: 2.4em;
+			width: 2.75em;
+			left: 0.85em;
+			bottom: 0.4em;
+			background-color: #ddd;
+			transform: rotate(15deg) skewX(15deg);
+		}
+
+		.switch-right {
+			right: 0.5em;
+			bottom: 0;
+			background-color: #bd5757;
+			color: #fff;
+		}
+
+		.switch-left::before,
+		.switch-right::before {
+			content: "";
+			position: absolute;
+			width: 0.4em;
+			height: 2.45em;
+			bottom: -0.45em;
+			background-color: #ccc;
+			transform: skewY(-65deg);
+		}
+
+		.switch-left::before {
+			left: -0.4em;
+		}
+
+		.switch-right::before {
+			right: -0.375em;
+			background-color: transparent;
+			transform: skewY(65deg);
+		}
+
+		input:checked+.switch-left {
+			background-color: #0084d0;
+			color: #fff;
+			bottom: 0px;
+			left: 0.5em;
+			height: 2.5em;
+			width: 3em;
+			transform: rotate(0deg) skewX(0deg);
+		}
+
+		input:checked+.switch-left::before {
+			background-color: transparent;
+			width: 3.0833em;
+		}
+
+		input:checked+.switch-left+.switch-right {
+			background-color: #ddd;
+			color: #888;
+			bottom: 0.4em;
+			right: 0.8em;
+			height: 2.4em;
+			width: 2.75em;
+			transform: rotate(-15deg) skewX(-15deg);
+		}
+
+		input:checked+.switch-left+.switch-right::before {
+			background-color: #ccc;
+		}
+
+		/* Keyboard Users */
+		input:focus+.switch-left {
+			color: #333;
+		}
+
+		input:checked:focus+.switch-left {
+			color: #fff;
+		}
+
+		input:focus+.switch-left+.switch-right {
+			color: #fff;
+		}
+
+		input:checked:focus+.switch-left+.switch-right {
+			color: #333;
+		}
+
+		body {
+			scroll-behavior: smooth;
+		}
+
+		main {
+			padding: 20px;
+		}
+
+		.heading {
+			color: #FF2727;
+			margin: 30px 0;
+		}
+
+		.note {
+			font-size: 1rem;
+			font-weight: 200px;
+			color: #FF2727;
+		}
+
+		.sub-heading {
+			margin-top: 20px;
+			font-size: 1.2rem;
+		}
+
+		ul {
+			margin: 0;
+			padding: 0;
+		}
+
+		li {
+			margin-top: 10px;
+		}
+
+		p {
+			margin: 0;
+			padding: 0;
+		}
+
+		.center {
+			text-align: center;
+		}
+
+		.force {
+			margin-top: 50px;
+		}
+
+		.defines {
+			padding-bottom: 20px;
+		}
+
+		.Examples {
+			margin-top: 20px;
+		}
+
+		#quiz-form {
+			max-width: 500px;
+			margin: 0 auto;
+		}
+
+		h2,
+		h3,
+		p {
+			margin-bottom: 10px;
+		}
+
+		label {
+			display: block;
+			margin-bottom: 5px;
+		}
+
+		button[type="submit"] {
+			margin-top: 20px;
+			margin: 20px auto;
+			padding: 10px 20px;
+			background-color: #007bff;
+			color: #fff;
+			border: none;
+			border-radius: 5px;
+			cursor: pointer;
+		}
+
+		button[type="submit"]:hover {
+			background-color: #0062cc;
+		}
+
+		.thank-msg {
+			display: none;
+			min-width: 100%;
+			min-height: 100%;
+		}
+
+		.correct-text {
+			color: #7C7C7C;
+		}
+
+
+		.info {
+			display: block;
+			opacity: var(--opacity);
+			transition-duration: 0.5s;
+		}
+
+		.nav-btn:hover {
+			--opacity: 1;
+		}
+	</style>
+</head>
+
+<body onload="loadQuestion()" id="body">
+
+	<!-- nav bar -->
+	<nav class="navbar navbar-expand-lg bg-body-tertiary">
+		<div class="container">
+			<a class="navbar-brand" href="#">YourNotes</a>
+			<ul class="nav">
+				<li class="nav-item">
+					<a class="nav-link active" aria-current="page" href="/index.html">Home
+					</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link active" aria-current="page" href="/sound.html">
+						<button class="nav-btn btn btn-primary position-relative">
+							Next →<span
+								class="info px-2 position-absolute top-0 start-100 translate-middle rounded-end rounded-top bg-secondary">Sound
+							</span>
+						</button>
+					</a>
+				</li>
+				<li class="nav-item">
+					<label class="rocker rocker-small">
+						<input type="checkbox" id="mode-changer">
+						<span class="switch-left"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+								class="bi bi-moon-fill" viewBox="0 0 16 16">
+								<path
+									d="M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z" />
+							</svg></span>
+						<span class="switch-right"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+								fill="currentColor" class="bi bi-brightness-low-fill" viewBox="0 0 16 16">
+								<path
+									d="M12 8a4 4 0 1 1-8 0 4 4 0 0 1 8 0zM8.5 2.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zm0 11a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zm5-5a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1zm-11 0a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1zm9.743-4.036a.5.5 0 1 1-.707-.707.5.5 0 0 1 .707.707zm-7.779 7.779a.5.5 0 1 1-.707-.707.5.5 0 0 1 .707.707zm7.072 0a.5.5 0 1 1 .707-.707.5.5 0 0 1-.707.707zM3.757 4.464a.5.5 0 1 1 .707-.707.5.5 0 0 1-.707.707z" />
+							</svg></span>
+					</label>
+				</li>
+			</ul>
+		</div>
+	</nav>
+
+	<main>
+		<!-- Force -->
+		<section id="force" class="force">
+			<div class="defines">
+				<h3 class="sub-heading"> <strong>types of forces in a concise way for class 10 ICSE:</strong>
+				</h3>
+
+				<br />
+				<ul>
+					<li>
+						<p>
+							<strong><i>Contact force:</i></strong>
+							A force that requires physical contact between two objects. Examples include friction, tension, and normal
+							force.
+						</p>
+					</li>
+
+					<li>
+						<p>
+							<strong><i>Non-contact force:</i></strong> A force that does not require physical contact between two
+							objects. Examples include gravity, magnetic force, and electric force.
+						</p>
+					</li>
+
+					<li>
+						<p>
+							<strong><i>Gravitational force:</i></strong> The force of attraction between any two objects in the
+							universe. It is dependent on the masses of the objects and the distance between them.
+						</p>
+					</li>
+
+					<li>
+						<p>
+							<strong><i>Frictional force:</i></strong> The force that opposes motion between two objects in contact. It
+							is dependent on the nature of the surfaces in contact and the force pressing them together.
+						</p>
+					</li>
+
+					<li>
+						<p>
+							<strong><i>Tension force: </i></strong>The force that exists in a stretched or compressed object, such as
+							a rope or spring.
+						</p>
+					</li>
+
+					<li>
+						<p>
+							<strong><i>Normal force:</i></strong> The force that exists perpendicular to a surface and prevents
+							objects from falling through it. It is equal in magnitude to the force pressing the object against the
+							surface.
+						</p>
+					</li>
+
+					<li>
+						<p>
+							<strong><i>Magnetic force: </i></strong>The force that exists between magnetic objects or between a
+							magnetic object and a charged particle in motion
+						</p>
+					</li>
+
+					<li>
+						<p>
+							<strong><i>Electrostatic force:</i></strong> The force that exists between charged objects. It can be
+							attractive or repulsive, depending on the charges of the objects.
+						</p>
+					</li>
+
+					<li>
+						<p>
+							<strong><i>Applied force:</i></strong> The force exerted on an object by an external agent, such as a
+							person pushing a box
+						</p>
+					</li>
+
+					<li>
+						<p>
+							<strong><i>Air resistance force:</i></strong> The force that opposes the motion of objects through the
+							air, such as the resistance a bird experiences while flying.
+						</p>
+
+					<li>
+						<p class="note">
+							<i><strong>Note-</strong>Remember that forces have both magnitude and direction, and are represented by
+								vectors.</i>
+						</p>
+					</li>
+
+
+					<li>
+						<p><strong><i>Turning forces:</i></strong> Also known as torque, a turning force is a force that causes an
+							object to rotate about an axis. It is given by the product of the force and the perpendicular distance
+							between the axis and the line of action of the force.</p>
+					</li>
+
+					<li>
+						<p><strong><i>Moment of a force:</i></strong> The moment of a force is the turning effect of a force about
+							an axis. It is equal to the product of the force and the perpendicular distance between the axis and the
+							line of action of the force.</p>
+					</li>
+
+					<li>
+						<p><strong><i>Forces in equilibrium:</i></strong> Forces are said to be in equilibrium when the net force
+							acting on an object is zero. This means that the object is not accelerating and is either at rest or
+							moving with a constant velocity. In other words, the forces are balanced.</p>
+					</li>
+
+					<li>
+						<p><strong><i>Center of gravity: </i></strong>The center of gravity is the point where the weight of an
+							object appears to act. It is the point where the entire weight of the object can be considered to be
+							concentrated. For a uniform object, the center of gravity is at the geometric center of the object.</p>
+					</li>
+					</p>
+					</li>
+				</ul>
+			</div>
+			<hr />
+			<div class="Examples">
+				<h3><strong><i>Examples:</i></strong></h3>
+				<ul>
+
+					<li>A seesaw is an example of turning forces. The turning effect is created when two people of different
+						weights sit on opposite ends of the seesaw.</li>
+
+					<li>A door handle is an example of moment of a force. When you push or pull on a door handle, the moment of
+						the force causes the door to either open or close.</li>
+
+					<li>A book lying on a table is an example of forces in equilibrium. The weight of the book is balanced by the
+						normal force of the table acting on it.</li>
+
+					<li>The center of gravity of a triangle is at the point where the medians intersect. To find the center of
+						gravity of a triangle, you can draw the medians and find their intersection point.</li>
+				</ul>
+			</div>
+			<hr />
+			<div class="Numericals">
+				<h3><strong><i>Numerical problems:</i></strong></h3>
+				<ol>
+
+					<li>A 10 N force is applied to a wrench at a distance of 0.5 m from the pivot point. What is the moment of the
+						force?<br /><br>
+						<strong><i>Solution- </i></strong> Moment = force x distance = 10 N x 0.5 m = 5 Nm
+					</li>
+
+					<li>A 5 kg block is placed on a frictionless surface. A 20 N force is applied to the block at an angle of 30
+						degrees above the horizontal. What is the horizontal component of the force?<br />
+						<br>
+						<strong><i>Solution- </i></strong>Horizontal component = force x cos(angle) = 20 N x cos(30) = 17.3 N
+					</li>
+				</ol>
+			</div>
+			<hr />
+		</section>
+
+		<!-- Work -->
+		<section id="work">
+			<div id="heading">
+				<h2>Notes on Wrok, Energy And Types of Energy in concise way for 10th ICSE </h2>
+			</div>
+			<div id="defines">
+				<ul>
+
+					<!-- work -->
+					<li>
+						<p>
+							<strong>
+								<i>Work: </i>
+							</strong>
+							Work is defined as the product of force and the displacement of an object in the direction of the force.
+							<br />
+							It is given by the formula W = F × S × cos(θ), where θ is the angle between the force and the
+							displacement.
+						</p>
+					</li>
+
+					<!-- Special cases of θ -->
+					<li>
+						<p>
+							<strong>
+								<i>Special cases of θ: </i>
+							</strong>
+							When <b><u> θ = 0°</u></b>, the force and displacement are in the same direction, and the work done is
+							maximum.
+							<br />
+							When <b><u> θ = 90°</u></b>, the force and displacement are perpendicular, and no work is done.
+						</p>
+					</li>
+
+					<!-- Work done in lifting an object -->
+					<li>
+						<p>
+							<strong>
+								<i>Work done in lifting an object: </i>
+							</strong>
+							When an object is lifted vertically against the force of gravity, the work done is given by the formula
+							<b><u> W = mgh</u></b>,
+							<br />
+							where <b>m</b> is the mass of the object, <b>g</b> is the acceleration due to gravity, and <b>h</b> is the
+							height of the object lifted.
+						</p>
+					</li>
+
+					<!-- Energy -->
+					<li>
+						<p>
+							<strong>
+								<i>Energy: </i>
+							</strong>
+							Energy is defined as the capacity to do work. It is measured in joules <b> (J)</b> in SI units. Energy can
+							be converted from one form to another, but it cannot be created or destroyed.
+						</p>
+					</li>
+
+					<!-- Units of work and energy: -->
+					<li>
+						<p>
+							<strong>
+								<i>Units of work and energy: </i>
+							</strong>
+							The units of work and energy are the same, i.e., joules (J). Other units of energy include
+						<ul>
+							<li>the calorie (1 cal = 4.18 J)</li>
+							<li>the calorie (1 cal = 4.18 J)</li>
+							<li>the kilowatt-hour (1 kW h = 3.6 × 10^6 J)</li>
+							<li>the electronvolt (1 eV = 1.6 × 10^-19 J)</li>
+							<li>the erg (1 erg = 10^-7 J)</li>
+						</ul>
+						</p>
+					</li>
+
+					<!--Power  -->
+					<li>
+						<p>
+							<strong>
+								<i>Power: </i>
+							</strong>
+							Power is defined as the rate at which work is done or energy is transferred. It is given by the formula P
+							= W/t, where P is power, W is work, and t is time. The SI unit of power is the watt (W), while the cgs
+							unit is the erg per second (erg/s).
+						</p>
+					</li>
+
+					<!--Other units of power  -->
+					<li>
+						<p>
+							<strong>
+								<i>Other units of power: </i>
+							</strong>
+							Other units of power include
+						<ul>
+							<li>kilowatt (1 kW = 1000 W)</li>
+							<li>megawatt (1 MW = 10^6 W)</li>
+							<li>gigawatt (1 GW = 10^9 W)</li>
+							<li>horsepower (1 hp = 746 W)</li>
+
+						</ul>
+						</p>
+					</li>
+				</ul>
+			</div>
+
+			<div id="Numericals">
+				<h3>
+					Numerical problems:
+				</h3>
+				<ol>
+					<li>
+						<h5>
+							If a force of 20 N is applied over a distance of 5 m, what is the work done?
+						</h5>
+						<p>
+							&emsp;<strong><i>Solution- </i></strong>Work = Force x Distance x cos(θ) = 20 N x 5 m x cos(0°) = 100 J
+						</p>
+					</li>
+					<hr />
+					<li>
+						<h5>
+							If a 2 kg object is lifted to a height of 10 m, what is the work done?
+						</h5>
+						<p>
+							&emsp;<strong><i>Solution- </i></strong>Work = mgh = 2 kg x 9.8 m/s^2 x 10 m = 196 J
+						</p>
+					</li>
+					<hr />
+					<li>
+						<h5>
+							If a 100 W bulb is left on for 2 hours, how much energy is used?
+						</h5>
+						<p>
+							&emsp;<strong><i>Solution- </i></strong>Energy = Power x Time = 100 W x 2 h x 3600 s/h = 720 kJ
+						</p>
+					</li>
+				</ol>
+			</div>
+
+			<!-- Different type of energy -->
+			<div id="Different-type-of-energy">
+				<h3>Different Types of Energy</h3>
+				<ul>
+					<!-- Mechanical Energy -->
+					<li>
+						<p>
+							<strong><i>Mechanical Energy: </i></strong>
+							Energy possessed by an object due to its motion or position.
+						</p>
+					</li>
+
+					<!-- Potential energy -->
+					<li>
+						<p>
+							<strong><i>Potential energy </i></strong>
+							Potential energy (U) is energy due to an object's position or height above ground: U = mgh.
+						</p>
+					</li>
+
+					<!-- Kinetic energy -->
+					<li>
+						<p>
+							<strong><i>Kinetic energy </i></strong>
+							Kinetic energy (K) is energy due to an object's motion: K = 1/2 mv<sup>2</sup>.
+							Kinetic energy can be translational, rotational, or vibrational.
+						</p>
+					</li>
+
+					<!-- Electrical Energy: -->
+					<li>
+						<p>
+							<strong><i>Electrical Energy:</i></strong>
+							Energy that results from the movement of charged particles, such as electrons.
+							Can be converted into other forms of energy, such as heat or light.
+						</p>
+					</li>
+
+					<!-- Chemical Energy: -->
+					<li>
+						<p>
+							<strong><i>Chemical Energy:</i></strong>
+							Energy stored in bonds between atoms and molecules.
+							Released when these bonds are broken.
+						</p>
+					</li>
+
+					<!-- Heat Energy: -->
+					<li>
+						<p>
+							<strong><i>Heat Energy:</i></strong>
+							Energy due to temperature difference.
+							Can be converted into other forms of energy, such as electrical or mechanical.
+						</p>
+					</li>
+
+					<!-- Nuclear Energy: -->
+					<li>
+						<p>
+							<strong><i>Nuclear Energy:</i></strong>
+							Energy stored in the nucleus of an atom.
+							Released during nuclear reactions.
+						</p>
+					</li>
+
+					<!-- Light Energy: -->
+					<li>
+						<p>
+							<strong><i>Light Energy:</i></strong>
+							Energy that travels in waves and can be seen.
+							Can be converted into electrical energy in solar cells.
+						</p>
+					</li>
+
+					<!-- Sound Energy -->
+					<li>
+						<p>
+							<strong><i>Sound Energy:</i></strong>
+							Energy that travels in waves and can be heard.
+							Can be converted into electrical energy in microphones.
+						</p>
+					</li>
+
+					<!-- Conversion of Energy: -->
+					<li>
+						<p>
+							<strong><i>Conversion of Energy:</i></strong>
+							Energy can be converted from one form to another.
+							Example: Electrical energy can be converted into light energy in a light bulb.
+							Energy is always conserved, meaning it cannot be created or destroyed, only converted from one form to
+							another.
+						</p>
+					</li>
+
+					<li>
+						<strong><i>Common Examples:</i></strong>
+					<li>
+
+						<strong><i>Mechanical energy:</i></strong>A moving car, a falling apple.
+
+					</li>
+					<li>
+
+						<strong><i>Electrical energy: </i></strong>A light bulb, a cell phone.
+
+					</li>
+					<li>
+
+						<strong><i>Chemical energy: </i></strong>Food, batteries.
+
+					</li>
+					<li>
+
+						<strong><i>Heat energy: </i></strong>Fire, boiling water.
+
+					</li>
+					<li>
+
+						<strong><i>Sound energy: </i></strong>
+						Music, a person speaking
+					</li>
+					<li>
+
+						<strong><i>Nuclear energy: </i></strong>Nuclear power plants.
+
+					</li>
+					<li>
+
+						<strong><i>Light energy: </i></strong>Sunlight, light bulbs.
+
+					</li>
+					</li>
+				</ul>
+			</div>
+		</section>
+		<hr>
+
+		<!-- test quiz -->
+		<section id="test-quiz">
+			<div>
+				<div class="thank-msg">
+				</div>
+				<form id="quiz-form">
+					<h2>
+						<center>Quiz Time</center>
+					</h2>
+
+					<h3>Question <span id="question-num"> 1</span></h3>
+					<p id="ques">whst is dummy question?</p>
+					<label id="a"><input type="radio" name="ques" value="a">A</label><br>
+					<label id="b"><input type="radio" name="ques" value="b">B</label><br>
+					<label id="c"><input type="radio" name="ques" value="c">C</label><br>
+					<label id="d"><input type="radio" name="ques" value="d">D</label>
+
+					<button id="submit-btn" class="btn " type="submit">Submit</button>
+
+					<p class="my-4 text-center">Score: <span id="score">0</span></p>
+
+				</form>
+				<hr />
+				<div id="repot-card">
+					<h3>
+						<center>Report Card</center>
+					</h3>
+					<div class="accordion" id="accordion">
+
+					</div>
+				</div>
+			</div>
+			</div>
+		</section>
+
+	</main>
+
+	<script>
+		// initialization 
+		const form = document.getElementById('quiz-form');
+		const quesNum = document.getElementById('question-num');
+		const question = document.getElementById('question');
+		const options = document.querySelectorAll('.opt');
+		const ques = document.getElementById('ques');
+		const a = document.getElementById('a');
+		const b = document.getElementById('b');
+		const c = document.getElementById('c');
+		const d = document.getElementById('d');
+		const formScore = document.getElementById('score');
+		const submitBtn = document.getElementById('submit-btn');
+		let score = 0;
+		let index = 0;
+		let answer = '';
+		let correct = true;
+		const questions = [
+			{
+				question: 'Which of the following is an example of a non-contact force?',
+				a: 'Friction',
+				b: 'Tension',
+				c: 'Normal reaction',
+				d: 'Magnetic force',
+				ans: 'd'
+			},
+			{
+				question: 'What is the force that opposes motion between two objects in contact?',
+				a: 'Normal force',
+				b: 'Tension force',
+				c: 'Gravitational force',
+				d: 'Frictional force',
+				ans: 'd'
+			},
+			{
+				question: 'What is the force that exists in a stretched or compressed object, such as a rope or spring?',
+				a: 'Tension force',
+				b: 'Frictional force',
+				c: 'Normal force',
+				d: 'Gravity',
+				ans: 'a'
+			},
+			{
+				question: 'What is the force that exists perpendicular to a surface and prevents objects from falling through it?',
+				a: 'Frictional force',
+				b: 'Tension force',
+				c: 'Normal force',
+				d: 'Gravitational force',
+				ans: 'c'
+			},
+			{
+				question: 'What is the force of attraction between any two objects in the universe?',
+				a: 'Magnetic force',
+				b: 'Electric force',
+				c: 'Frictional force',
+				d: 'Gravitational force',
+				ans: 'd'
+			},
+			{
+				question: 'What is the force exerted on an object by an external agent, such as a person pushing a box?',
+				a: 'Normal force',
+				b: 'Tension force',
+				c: 'Applied force',
+				d: 'Air resistance force',
+				ans: 'c'
+			},
+			{
+				question: 'What is the force that opposes the motion of objects through the air?',
+				a: 'Frictional force',
+				b: 'Air resistance force',
+				c: 'Tension force',
+				d: 'Gravitational force',
+				ans: 'b'
+			},
+			{
+				question: 'What is torque?',
+				a: 'A non-contact force',
+				b: 'A turning force',
+				c: 'A force that opposes motion',
+				d: 'A force that exists perpendicular to a surface',
+				ans: 'b'
+			},
+			{
+				question: 'What is the turning effect of a force about an axis?',
+				a: 'Work',
+				b: 'Power',
+				c: 'Momentum',
+				d: 'Moment of a force',
+				ans: 'd'
+			},
+			{
+				question: 'When are forces said to be in equilibrium?',
+				a: 'When the net force acting on an object is zero',
+				b: 'When the net force acting on an object is not zero',
+				c: 'When the object is accelerating',
+				d: 'When the object is at rest',
+				ans: 'a'
+			}
+		];
+
+
+		// functions
+		const updateReportCard = (correct) => {
+
+			let bgColor = correct ? "bg-success text-white" : "bg-danger text-white";
+
+			document.getElementById('accordion').innerHTML += `
+          <div class="my-4 accordion-item text-info">
+              <h2 class="accordion-header" id="heading${index}">
+                  <button
+                  class="${bgColor} accordion-button"
+                  type="button" 
+                  data-bs-toggle="collapse" 
+                  data-bs-target="#collapse${index}"
+                  aria-expanded="true" 
+                  aria-controls="collapse${index}"
+                  style="--bs-bg-opacity: .2;"
+                  >
+                  Q - ${questions[index].question}
+                  </button>
+              </h2>
+              <div id="collapse${index}" class="accordion-collapse collapse " aria-labelledby="heading${index}" data-bs-parent="#accordin">
+                  <div class="accordion-body">
+                  <div class="d-flex mx-2">   
+                  <p class="d-flex mx-2"> A.${questions[index].a}
+                  ${questions[index].ans === 'a' ?
+					'<h6 class="correct-text"><i>correct</i></h6>' :
+					''}</p></div>
+                  <div class="d-flex mx-2">
+                  <p class="d-flex mx-2"> B.${questions[index].b}
+                  ${questions[index].ans === 'b' ?
+					'<h6 class="correct-text"><i>correct</i></h6>' :
+					''}</p></div>
+                  <div class="d-flex mx-2">
+                  <p class="d-flex mx-2"> C.${questions[index].c}
+                  ${questions[index].ans === 'c' ?
+					'<h6 class="correct-text"><i>correct</i></h6>' :
+					''}</p></div>
+                  <div class="d-flex mx-2">
+                  <p class="d-flex mx-2"> D.${questions[index].d}
+                  ${questions[index].ans === 'd' ?
+					'<h6 class="correct-text"><i>correct</i></h6>' :
+					''}</p></div>
+                  <p> Choosed answer - ${answer}</p>
+                  </div>
+              </div>
+          </div>
+    `;
+
+		}
+
+		const loadQuestion = () => {
+			// function to update question number, question and options 
+
+			if (index >= questions.length) {
+				submitBtn.disable = true;
+				form.innerHTML = `<h3> Thankyou for playing</h3>`;
+				return;
+			} else {
+				quesNum.innerText = index + 1;
+				ques.innerText = questions[index].question;
+				a.innerHTML = `<input type="radio" name="ques" value="a"> ${questions[index].a}`;
+				b.innerHTML = `<input type="radio" name="ques" value="b"> ${questions[index].b}`;
+				c.innerHTML = `<input type="radio" name="ques" value="c"> ${questions[index].c}`;
+				d.innerHTML = `<input type="radio" name="ques" value="d"> ${questions[index].d}`;
+			}
+		}
+
+		const changeScore = (score) => {
+			// function to update score
+			document.getElementById('score').innerText = score;
+		}
+
+		const checkAnswer = (answer) => {
+			// function to check answer
+			if (answer == questions[index].ans) {
+				return true;
+			} else {
+				return false;
+			}
+
+		}
+
+		// adding change event listener to form
+		form.addEventListener('change', (e) => {
+			answer = e.target.value;
+		})
+
+		// adding submit event listener to form
+		form.addEventListener('submit', (e) => {
+			e.preventDefault();
+
+			if (index >= questions.length) {
+				submitBtn.disable = true;
+				return;
+			} else {
+
+				correct = checkAnswer(answer);
+				updateReportCard(correct);
+
+
+				if (correct) {
+					score++;
+					index++;
+					changeScore(score);
+					form.reset();
+					loadQuestion();
+				} else {
+					index++;
+					loadQuestion();
+				}
+			}
+
+		})
+
+		document.getElementById('mode-changer').addEventListener('click', () => {
+			document.getElementById('body').classList.toggle("text-bg-secondary");
+		});
+	</script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+		crossorigin="anonymous"></script>
+</body>
+
+</html>

@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+
+	<title> Yournotes - Sound</title>
+	<style>
+		:root {
+			--opacity: 0;
+		}
+
+		/* Switch starts here */
+		.rocker {
+			display: inline-block;
+			position: relative;
+			font-size: 30px;
+			font-weight: bold;
+			text-align: center;
+			text-transform: uppercase;
+			color: #888;
+			width: 7em;
+			height: 4em;
+			overflow: hidden;
+			border-bottom: 0.5em solid #eee;
+		}
+
+		.rocker-small {
+			font-size: 8px;
+			/* Sizes the switch */
+			margin: 1em;
+		}
+
+		.rocker::before {
+			content: "";
+			position: absolute;
+			top: 0.5em;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			background-color: #999;
+			border: 0.5em solid #eee;
+			border-bottom: 0;
+		}
+
+		.rocker input {
+			opacity: 0;
+			width: 0;
+			height: 0;
+		}
+
+		.switch-left,
+		.switch-right {
+			cursor: pointer;
+			position: absolute;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			height: 2.5em;
+			width: 3em;
+			transition: 0.2s;
+			user-select: none;
+		}
+
+		.switch-left {
+			height: 2.4em;
+			width: 2.75em;
+			left: 0.85em;
+			bottom: 0.4em;
+			background-color: #ddd;
+			transform: rotate(15deg) skewX(15deg);
+		}
+
+		.switch-right {
+			right: 0.5em;
+			bottom: 0;
+			background-color: #bd5757;
+			color: #fff;
+		}
+
+		.switch-left::before,
+		.switch-right::before {
+			content: "";
+			position: absolute;
+			width: 0.4em;
+			height: 2.45em;
+			bottom: -0.45em;
+			background-color: #ccc;
+			transform: skewY(-65deg);
+		}
+
+		.switch-left::before {
+			left: -0.4em;
+		}
+
+		.switch-right::before {
+			right: -0.375em;
+			background-color: transparent;
+			transform: skewY(65deg);
+		}
+
+		input:checked+.switch-left {
+			background-color: #0084d0;
+			color: #fff;
+			bottom: 0px;
+			left: 0.5em;
+			height: 2.5em;
+			width: 3em;
+			transform: rotate(0deg) skewX(0deg);
+		}
+
+		input:checked+.switch-left::before {
+			background-color: transparent;
+			width: 3.0833em;
+		}
+
+		input:checked+.switch-left+.switch-right {
+			background-color: #ddd;
+			color: #888;
+			bottom: 0.4em;
+			right: 0.8em;
+			height: 2.4em;
+			width: 2.75em;
+			transform: rotate(-15deg) skewX(-15deg);
+		}
+
+		input:checked+.switch-left+.switch-right::before {
+			background-color: #ccc;
+		}
+
+		/* Keyboard Users */
+		input:focus+.switch-left {
+			color: #333;
+		}
+
+		input:checked:focus+.switch-left {
+			color: #fff;
+		}
+
+		input:focus+.switch-left+.switch-right {
+			color: #fff;
+		}
+
+		input:checked:focus+.switch-left+.switch-right {
+			color: #333;
+		}
+
+		.info {
+			display: block;
+			opacity: var(--opacity);
+			transition-duration: 0.5s;
+		}
+
+		.nav-btn:hover {
+			--opacity: 1;
+		}
+	</style>
+</head>
+
+<body onload="loadQuestion()" id="body">
+	<!-- nav bar -->
+	<nav class="navbar navbar-expand-lg bg-body-tertiary">
+		<div class="container">
+			<a class="navbar-brand" href="#">YourNotes</a>
+			<ul class="nav">
+				<li class="nav-item">
+					<a class="nav-link active" aria-current="page" href="/index.html">Home
+					</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link active" aria-current="page" href="/force.html">
+						<button class="nav-btn btn btn-primary position-relative">
+							prev<span
+								class="info px-2 position-absolute top-0 start-100 translate-middle rounded-end rounded-top bg-secondary">Force</span>
+						</button>
+					</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link active" aria-current="page" href="/sound.html">
+						<button class="nav-btn btn btn-primary position-relative">
+							Next<span
+								class="info px-2 position-absolute top-0 start-100 translate-middle rounded-end rounded-top bg-secondary">Sound</span>
+						</button>
+					</a>
+				</li>
+				<li class="nav-item"><label class="rocker rocker-small">
+						<input type="checkbox" id="mode-changer">
+						<span class="switch-left"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+								class="bi bi-moon-fill" viewBox="0 0 16 16">
+								<path
+									d="M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z" />
+							</svg></span>
+						<span class="switch-right"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+								fill="currentColor" class="bi bi-brightness-low-fill" viewBox="0 0 16 16">
+								<path
+									d="M12 8a4 4 0 1 1-8 0 4 4 0 0 1 8 0zM8.5 2.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zm0 11a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zm5-5a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1zm-11 0a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1zm9.743-4.036a.5.5 0 1 1-.707-.707.5.5 0 0 1 .707.707zm-7.779 7.779a.5.5 0 1 1-.707-.707.5.5 0 0 1 .707.707zm7.072 0a.5.5 0 1 1 .707-.707.5.5 0 0 1-.707.707zM3.757 4.464a.5.5 0 1 1 .707-.707.5.5 0 0 1-.707.707z" />
+							</svg></span>
+					</label></li>
+			</ul>
+		</div>
+	</nav>
+	<!-- Main content  -->
+	<maim>
+		<section class="m-4" id="sound">
+			<!-- Sound -->
+			<div class="my-4" id="Sound">
+				<h1 class="text-center">Sound</h1>
+				<p>
+
+				<h4>defination of sound</h4>
+				Sound is a form of energy that is produced due to the vibration of an object.
+				When sound waves travel through a medium, they can reflect, refract or diffract depending upon the nature of the
+				medium.
+				</p>
+
+			</div>
+
+			<!-- Reflection of Sound -->
+			<div id="reflection-of-sound">
+				<h3>Reflection of Sound</h3>
+				<p>
+					Reflection of sound is the phenomenon of bouncing back of sound waves when they strike a surface.
+					The angle of incidence and the angle of reflection are always equal and they lie in the same plane.
+					This law of reflection of sound is similar to the law of reflection of light.
+				</p>
+			</div>
+		</section>
+
+		<hr />
+
+		<section id="Echoes" class="m-4">
+
+			<h3>Echoes</h3>
+			<div id="ehoe">
+				<ul style="list-style: none">
+					<li>
+						<div id="echo">
+							<h4>defination of echoes</h4>
+							<p>Echoes are the sounds that we hear when sound waves reflect off a surface and return to our ears after
+								some time delay. Echoes are formed due to the reflection of sound waves from hard surfaces such as
+								walls,
+								cliffs, mountains, etc. The time delay between the original sound and the echo depends on the distance
+								between the sound source and the reflecting surface.
+							</p>
+						</div>
+					</li>
+					<li>
+						<div id="">
+							<h3>Uses of Echoes</h3>
+							<p>
+								Echoes have several practical applications. They are used by people to determine the distance of an
+								object, location of an object, depth of a sea, etc. For example, the depth of a sea can be determined by
+								sending sound waves from a ship towards the sea bed and measuring the time taken for the echo to return.
+							</p>
+						</div>
+					</li>
+				</ul>
+			</div>
+			<div id="numericals">
+
+				<h3><strong><i>Numerical problems on Echoes:</i></strong></h3>
+				<ol>
+					<li>
+						A man standing near a cliff produces a sound and hears the first echo after 3 seconds. He hears the second
+						echo after 2 seconds. Find the distance of the man from the cliff.
+						<br />
+						<br />
+						<strong><i>Solution:</i></strong>
+
+						&emsp;Let the distance between the man and the cliff be <strong><i>x.</i></strong>
+						<br />
+						The time taken for the sound to travel from the man to the cliff and back to the man (first echo) is
+						<strong><i>3</i></strong> seconds.
+						<br />
+						The time taken for the sound to travel from the man to the cliff and back to the man (second echo) is
+						<strong><i>2</i></strong> seconds.
+						<br />
+
+						<br />
+						Using the formula, <strong><i>distance = speed × time,</i></strong>
+						<br />
+						Distance traveled by sound in 3 seconds = <strong><i>2x</i></strong>
+						<br />
+						Distance traveled by sound in 2 seconds = <strong><i>x</i></strong>
+						<br />
+
+						<br />
+						Therefore, the difference in distance covered by the sound between the two echoes <strong><i>= 2x - x =
+								x</i></strong>
+						<br />
+						Since the sound travels at a speed of 340 m/s in air, the distance traveled by sound in
+						<strong><i>x</i></strong> time is <strong><i>340x.</i></strong>
+						<br />
+
+						<br />
+						Hence, <strong><i>340x = x,</i></strong> which implies <strong><i>x = 170 meters.</i></strong>
+						<br />
+						Therefore, the man is <strong><i>170 meters</i></strong> away from the cliff.
+					</li>
+					<br />
+					<br />
+					<li>A sound is produced at a distance of 90 meters from a cliff. If the echo is heard after 3 seconds, find
+						the
+						speed of sound.
+						<br />
+						<br />
+						<strong><i>Solution:</i></strong>
+						<strong><i></i></strong>
+
+						&emsp;Let the speed of sound be <strong><i>v.</i></strong>
+						<br />
+						The distance traveled by sound to the cliff and back is <strong><i>2 × 90 = 180 meters.</i></strong>
+						<br />
+						The time taken for the sound to travel this distance is <strong><i>3 seconds.</i></strong>
+
+						<br />
+						<br />
+						Using the formula, <strong><i>distance = speed × time,
+								v × 3 = 180</i></strong>
+
+						<br />
+						<br />
+						Therefore, the speed of sound is v = 180/3 = 60 meters per second.
+
+						<br />
+						<br />
+						Hence, the speed of sound is <strong><i>60 meters</i></strong> per second.
+					</li>
+				</ol>
+				<div>
+					<p class="text-danger"><strong><i>Note-</i></strong>These numerical problems are for practice purposes only.
+						The
+						actual numerical problems in the ICSE exam may differ in their complexity and approach. </p>
+				</div>
+			</div>
+			<div id="production-of-echoes">
+				<p>
+				<h4>production of Echoes</h4>
+				Echoes are produced when a sound wave is reflected off a surface and returns back to the listener's ear. The
+				production of echoes is dependent on several factors, including the intensity, frequency, and direction of the
+				sound wave, as well as the nature of the reflecting surface and the distance between the source and the
+				reflecting
+				surface.
+
+				<h5 class="pt-5">The conditions for the formation of echoes are:</h5>
+				<ol>
+					<li>
+						Presence of a reflecting surface: For an echo to be produced, there must be a surface that can reflect the
+						sound waves. This can be any surface, such as a wall, mountain, or even the ground.
+					</li>
+					<li>
+						Distance between source and reflecting surface: The distance between the source of the sound wave and the
+						reflecting surface must be such that the reflected sound wave reaches the listener's ear after a noticeable
+						delay. This delay is what creates the echo effect.
+					</li>
+					<li>
+						Intensity of the sound wave: The intensity of the original sound wave must be high enough to create a
+						noticeable echo. If the sound wave is too weak, the reflected sound wave will be too weak to be heard.
+					</li>
+					<li>
+						Direction of the sound wave: The direction of the original sound wave and the direction of the reflected
+						sound
+						wave must be such that they create a noticeable echo. If the reflected sound wave is directed away from the
+						listener, it will not create an echo.
+					</li>
+					<li>
+						Absence of background noise: The absence of background noise is essential for the formation of clear echoes.
+						If there is too much background noise, the echo may be masked or difficult to hear.
+					</li>
+				</ol>
+
+				Overall, echoes can be produced under a variety of conditions, but they are most noticeable in large open spaces
+				with hard surfaces that can reflect sound waves back to the listener's ear.
+				</p>
+			</div>
+			<div>
+				<h4>Use of echoes by bats, dolphins, fishermen, medical field.</h4>
+				<p>
+
+					Bats, dolphins, fishermen, and medical professionals all use echoes in their respective fields.
+				</p>
+				<p>
+					<strong><i>Bats</i></strong> use echoes to navigate and locate prey. They emit high-frequency sound waves and
+					listen for the echoes that bounce back off of objects in their surroundings. By analyzing the echoes, bats can
+					create a mental image of their environment and detect any obstacles or prey.
+				</p>
+
+				<p>
+					<strong><i>Dolphins</i></strong> also use echoes for navigation and locating prey. They emit clicks and listen
+					for the echoes that bounce back, allowing them to determine the location, size, and shape of objects in their
+					environment. This ability is known as echolocation.
+				</p>
+
+				<p>
+					<strong><i>Fishermen</i></strong> also use echoes to locate schools of fish. Fish finders use sonar technology
+					to emit sound waves into the water and listen for the echoes that bounce back. By analyzing the echoes,
+					fishermen can locate schools of fish and target their catch more efficiently.
+				</p>
+
+				<p>
+					<strong><i>In the medical field</i></strong>, ultrasound imaging uses echoes to create images of the internal
+					structures of the body. High-frequency sound waves are emitted into the body and bounce back off of the
+					different organs and tissues. By analyzing the echoes, doctors can create detailed images of the body's
+					internal
+					structures, aiding in diagnosis and treatment. Ultrasound imaging is commonly used during pregnancy to monitor
+					the growth and development of the fetus.
+				</p>
+			</div>
+		</section>
+
+		<hr />
+
+		<section id="SONAR" class="m-4">
+			<div>
+				<h3>SONAR</h3>
+				<p>
+					SONAR stands for Sound Navigation And Ranging. It is a technique that is used to detect and locate underwater
+					objects using sound waves. SONAR works by emitting sound waves from a device called a transducer, which then
+					travel through the water and bounce off objects in their path. The reflected sound waves, or echoes, are then
+					detected by the same transducer and converted into electrical signals.</p>
+
+				<p>The time taken by the sound waves to travel from the transmitter to the object and back to the receiver is
+					used
+					to determine the distance between the SONAR device and the object. This process is similar to the way in which
+					bats use echolocation to locate their prey.</p>
+
+				<p>SONAR is used in a variety of applications, including navigation, communication, and detection of underwater
+					objects such as submarines, shipwrecks, and schools of fish. In the medical field, a type of SONAR called
+					ultrasound is used to create images of internal organs and tissues.</p>
+
+				<p>The use of SONAR has revolutionized underwater exploration and has become an essential tool for the military,
+					research organizations, and industries such as oil and gas exploration.</p>
+			</div>
+		</section>
+
+		<hr />
+
+		<section id="vibration" class="m-4">
+			<div>
+				<h3>Vibrations</h3>
+				<div class="px-2 bg-info bg-opacity-10 border border-info rounded">
+
+					<p>
+					<h5>Natural Vibrations:</h5>
+
+					Natural vibrations are the vibrations of an object or a system that occur without any external force being
+					applied to it. These vibrations occur at a certain frequency known as the natural frequency of the system.
+					Natural vibrations can be observed in various objects such as pendulums, tuning forks, and springs.</p>
+					<p>
+					<h4>Damped Vibrations:</h4>
+
+					Damped vibrations occur when an external force is applied to an object or a system, causing it to vibrate.
+					Unlike natural vibrations, damped vibrations decrease over time due to the dissipation of energy in the form
+					of
+					heat, sound or any other form of energy. This dissipation of energy is known as damping.</p>
+				</div>
+
+
+				<p class="my-3">
+					There are different types of damping such as viscous damping, coulomb damping, and hysteresis damping. In
+					viscous damping, energy is dissipated due to the friction between the moving parts of the system. In Coulomb
+					damping, energy is dissipated due to the sliding friction between the two surfaces. In hysteresis damping,
+					energy is dissipated due to the internal friction of the material of the system.</p>
+
+				<p>
+					In real-world scenarios, damping is important to control the vibrations of machines and structures to ensure
+					their smooth and safe operation. For example, in a car, shock absorbers help in damping the vibrations caused
+					by
+					the movement of the car on a bumpy road. In musical instruments, damping is used to control the resonance and
+					sustain of the notes produced.</p>
+				<div class="my-3 px-2 bg-info bg-opacity-10 border border-info rounded">
+					<p>
+					<h5>Forced vibrations</h5>
+					Forced vibrations occur when an external periodic force is applied to a system, which causes the system to
+					vibrate with the same frequency as the applied force. The frequency of the external force is known as the
+					driving frequency, and the amplitude of the forced vibration depends on the amplitude of the driving force.
+					</p>
+				</div>
+				<p>
+					Resonance is a special case of forced vibration that occurs when the driving frequency is equal to the natural
+					frequency of the system. In this case, the amplitude of the vibration becomes very large, and the system may
+					even be destroyed if the amplitude becomes too large.</p>
+				<p>
+				<h6>Example</h6>
+				if a child is swinging on a swing, they are creating forced vibrations. If someone comes along and pushes the
+				child at the right frequency, the swing will start to resonate and the child will swing higher and higher. This
+				is
+				because the frequency of the push is the same as the natural frequency of the swing, which causes the amplitude
+				of
+				the swing to increase.</p>
+				<p>
+					Another example of resonance is the shattering of a glass by a singer. When a singer sings at the natural
+					frequency of a glass, the glass starts vibrating with larger amplitude and may shatter if the amplitude
+					becomes
+					too large.</p>
+				<p>
+					Resonance is used in many applications, such as tuning musical instruments, radio and television broadcasting,
+					and even in medical imaging techniques like Magnetic Resonance Imaging (MRI).
+				</p>
+			</div>
+		</section>
+
+		<hr />
+
+		<section class="m-4">
+			<h3>Loudness, pitch and quality of sound</h3>
+			<div>
+				<p>
+					Sound is a form of energy that is produced due to the vibration of an object. It is characterized by three
+					main
+					characteristics: loudness, pitch, and quality.
+				</p>
+				<div class="my-2 p-3 rounded border border-info">
+					<p>
+					<h4>Loudness:</h4>
+					Loudness is the subjective perception of the intensity of sound. It is the measure of the degree of sensation
+					produced in the ear by the sound wave. Loudness is determined by the amplitude or intensity of the sound wave.
+					The greater the amplitude of the sound wave, the louder the sound will be perceived. The unit of measurement
+					of
+					loudness is the decibel (dB). The human ear can perceive sounds ranging from 0 dB (threshold of hearing) to
+					140
+					dB (threshold of pain).</p>
+					<p>
+					<h5>Factors affecting loudness:</h5>
+
+					&emsp;The loudness of a sound depends on the amplitude of the sound wave, the distance from the source of the
+					sound, and the sensitivity of the ear.
+					</p>
+				</div>
+				<div class="my-2 p-3 rounded border border-info">
+					<p>
+					<h4>
+						Pitch:</h4>
+					Pitch is the subjective perception of the frequency of sound. It is the measure of the highness or lowness of
+					a
+					sound. Pitch is determined by the frequency of the sound wave. The higher the frequency of the sound wave, the
+					higher the pitch will be perceived. The unit of measurement of pitch is hertz (Hz). The range of audible
+					frequencies for the human ear is from 20 Hz to 20,000 Hz.</p>
+					<p>
+					<h5>
+						Factors affecting pitch:</h5>
+					The pitch of a sound depends on the frequency of the sound wave and the sensitivity of the ear.</p>
+				</div>
+				<div class="p-3 my-2 rounded border border-info">
+					<p>
+					<h4>
+						Quality:</h4>
+					Quality is the subjective perception of the complexity of sound. It is the measure of the purity or richness
+					of
+					a sound. Quality is determined by the harmonic content of the sound wave. The more the number of harmonics in
+					the sound wave, the richer the quality of the sound will be perceived.</p>
+					<p>
+					<h5>
+						Factors affecting quality:</h5>
+					The quality of a sound depends on the number and intensity of the harmonics in the sound wave.</p>
+				</div>
+				<p>
+					In summary, loudness is the measure of the degree of sensation produced in the ear by the sound wave, pitch is
+					the measure of the highness or lowness of a sound, and quality is the measure of the purity or richness of a
+					sound. The factors affecting loudness, pitch, and quality are mainly related to the amplitude, frequency, and
+					harmonic content of the sound wave, as well as the sensitivity of the ear and the distance from the source of
+					the sound.</p>
+			</div>
+		</section>
+		<hr>
+
+		<!-- test quiz -->
+		<section id="test-quiz">
+			<div>
+				<form class="flex flex-col px-2 mx-4 rounded " id="quiz-form">
+					<h2 class="pt-2">
+						<center>Quiz Time</center>
+					</h2>
+
+					<h3 class="my-3">Question<span id="question-num"> 1</span></h3>
+					<p id="ques"></p>
+					<label class="d-block" id="a"><input type="radio" name="ques" value="a">A</label><br>
+					<label class="d-block" id="b"><input type="radio" name="ques" value="b">B</label><br>
+					<label class="d-block" id="c"><input type="radio" name="ques" value="c">C</label><br>
+					<label class="d-block" id="d"><input type="radio" name="ques" value="d">D</label>
+
+					<button class="d-block mx-auto my-4 p-2 btn btn-primary" id="submit-btn" class="btn "
+						type="submit">Submit</button>
+
+					<p class="my-4 text-center">Score: <span id="score">0</span></p>
+
+				</form>
+				<hr />
+				<div id="repot-card">
+					<h3>
+						<center>Report Card</center>
+					</h3>
+					<div class="accordion" id="accordion">
+
+					</div>
+				</div>
+			</div>
+			</div>
+		</section>
+	</maim>
+
+
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+		crossorigin="anonymous"></script>
+
+	<script>
+		// initialization 
+		const form = document.getElementById('quiz-form');
+		const quesNum = document.getElementById('question-num');
+		const question = document.getElementById('question');
+		const options = document.querySelectorAll('.opt');
+		const ques = document.getElementById('ques');
+		const a = document.getElementById('a');
+		const b = document.getElementById('b');
+		const c = document.getElementById('c');
+		const d = document.getElementById('d');
+		const formScore = document.getElementById('score');
+		const submitBtn = document.getElementById('submit-btn');
+		let score = 0;
+		let index = 0;
+		let answer = '';
+		let correct = true;
+		const questions = [
+			{
+				question: 'Which of the following is an example of a non-contact force?',
+				a: 'Friction',
+				b: 'Tension',
+				c: 'Normal reaction',
+				d: 'Magnetic force',
+				ans: 'd'
+			},
+			{
+				question: 'What is the force that opposes motion between two objects in contact?',
+				a: 'Normal force',
+				b: 'Tension force',
+				c: 'Gravitational force',
+				d: 'Frictional force',
+				ans: 'd'
+			},
+			{
+				question: 'What is the force that exists in a stretched or compressed object, such as a rope or spring?',
+				a: 'Tension force',
+				b: 'Frictional force',
+				c: 'Normal force',
+				d: 'Gravity',
+				ans: 'a'
+			},
+			{
+				question: 'What is the force that exists perpendicular to a surface and prevents objects from falling through it?',
+				a: 'Frictional force',
+				b: 'Tension force',
+				c: 'Normal force',
+				d: 'Gravitational force',
+				ans: 'c'
+			},
+			{
+				question: 'What is the force of attraction between any two objects in the universe?',
+				a: 'Magnetic force',
+				b: 'Electric force',
+				c: 'Frictional force',
+				d: 'Gravitational force',
+				ans: 'd'
+			},
+			{
+				question: 'What is the force exerted on an object by an external agent, such as a person pushing a box?',
+				a: 'Normal force',
+				b: 'Tension force',
+				c: 'Applied force',
+				d: 'Air resistance force',
+				ans: 'c'
+			},
+			{
+				question: 'What is the force that opposes the motion of objects through the air?',
+				a: 'Frictional force',
+				b: 'Air resistance force',
+				c: 'Tension force',
+				d: 'Gravitational force',
+				ans: 'b'
+			},
+			{
+				question: 'What is torque?',
+				a: 'A non-contact force',
+				b: 'A turning force',
+				c: 'A force that opposes motion',
+				d: 'A force that exists perpendicular to a surface',
+				ans: 'b'
+			},
+			{
+				question: 'What is the turning effect of a force about an axis?',
+				a: 'Work',
+				b: 'Power',
+				c: 'Momentum',
+				d: 'Moment of a force',
+				ans: 'd'
+			},
+			{
+				question: 'When are forces said to be in equilibrium?',
+				a: 'When the net force acting on an object is zero',
+				b: 'When the net force acting on an object is not zero',
+				c: 'When the object is accelerating',
+				d: 'When the object is at rest',
+				ans: 'a'
+			}
+		];
+
+		// functions
+		const updateReportCard = (correct) => {
+
+			let bgColor = correct ? "bg-success" : "bg-dangere";
+
+			document.getElementById('accordion').innerHTML += `
+          <div class="my-4 accordion-item">
+              <h2 class="accordion-header" id="heading${index}">
+                  <button
+                  class="${bgColor} accordion-button"
+                  type="button" 
+                  data-bs-toggle="collapse" 
+                  data-bs-target="#collapse${index}"
+                  aria-expanded="true" 
+                  aria-controls="collapse${index}"
+                  style="--bs-bg-opacity: .2;"
+                  >
+                  Q - ${questions[index].question}
+                  </button>
+              </h2>
+              <div id="collapse${index}" class="accordion-collapse collapse " aria-labelledby="heading${index}" data-bs-parent="#accordin">
+                  <div class="accordion-body">
+                  <div class="d-flex mx-2">
+                  <p class="d-flex mx-2"> A.${questions[index].a}
+                  ${questions[index].ans === 'a' ?
+					'<h6 class="correct-text"><i>correct</i></h6>' :
+					''}</p></div>
+                  <div class="d-flex mx-2">
+                  <p class="d-flex mx-2"> B.${questions[index].b}
+                  ${questions[index].ans === 'b' ?
+					'<h6 class="correct-text"><i>correct</i></h6>' :
+					''}</p></div>
+                  <div class="d-flex mx-2">
+                  <p class="d-flex mx-2"> C.${questions[index].c}
+                  ${questions[index].ans === 'c' ?
+					'<h6 class="correct-text"><i>correct</i></h6>' :
+					''}</p></div>
+                  <div class="d-flex mx-2">
+                  <p class="d-flex mx-2"> D.${questions[index].d}
+                  ${questions[index].ans === 'd' ?
+					'<h6 class="correct-text"><i>correct</i></h6>' :
+					''}</p></div>
+                  <p> Choosed answer - ${answer}</p>
+                  </div>
+              </div>
+          </div>
+    `;
+
+		}
+
+		const loadQuestion = () => {
+			// function to update question number, question and options 
+
+			if (index >= questions.length) {
+				submitBtn.disable = true;
+				form.innerHTML = `<h3> Thankyou for playing</h3>`;
+				return;
+			} else {
+				quesNum.innerText = index + 1;
+				ques.innerText = questions[index].question;
+				a.innerHTML = `<input type="radio" name="ques" value="a"> ${questions[index].a}`;
+				b.innerHTML = `<input type="radio" name="ques" value="b"> ${questions[index].b}`;
+				c.innerHTML = `<input type="radio" name="ques" value="c"> ${questions[index].c}`;
+				d.innerHTML = `<input type="radio" name="ques" value="d"> ${questions[index].d}`;
+			}
+		}
+
+		const changeScore = (score) => {
+			// function to update score
+			document.getElementById('score').innerText = score;
+		}
+
+		const checkAnswer = (answer) => {
+			// function to check answer
+			if (answer == questions[index].ans) {
+				return true;
+			} else {
+				return false;
+			}
+
+		}
+
+		// adding change event listener to form
+		form.addEventListener('change', (e) => {
+			answer = e.target.value;
+		})
+
+		// adding submit event listener to form
+		form.addEventListener('submit', (e) => {
+			e.preventDefault();
+
+			if (index >= questions.length) {
+				submitBtn.disable = true;
+				return;
+			} else {
+
+				correct = checkAnswer(answer);
+				updateReportCard(correct);
+
+
+				if (correct) {
+					score++;
+					index++;
+					changeScore(score);
+					form.reset();
+					loadQuestion();
+				} else {
+					index++;
+					loadQuestion();
+				}
+			}
+
+		})
+
+		document.getElementById('mode-changer').addEventListener('click', () => {
+			document.getElementById('body').classList.toggle("text-bg-secondary");
+		});
+	</script>
+</body>
+
+</html>

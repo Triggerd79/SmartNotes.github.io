@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>YourNotes - A concised notes taking application</title>
+	<!-- css -->
+	<!-- Bootstrap CSS -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+
+	<style>
+		body {
+			background: url("https://cdn.pixabay.com/photo/2015/12/01/15/43/black-1072366_960_720.jpg");
+		}
+	</style>
+</head>
+
+<body onload="loadFAQ()" id="body">
+	<!-- nav bar -->
+	<nav class="navbar navbar-expand-lg bg-body-tertiary">
+		<div class="container-fluid">
+			<a class="navbar-brand" href="#">YourNotes</a>
+			<ul class="nav">
+				<li class="nav-item">
+					<a class="nav-link active" aria-current="page" href="/index.html">Home</a>
+				</li>
+				<li class="nav-item">
+					<div class="btn-group">
+						<button type="button" class="btn text-primary dropdown-toggle" data-bs-toggle="dropdown"
+							aria-expanded="false">
+							Physics
+						</button>
+						<ul class="dropdown-menu">
+							<li><a class="dropdown-item" href="/force.html">Force Work and Energy</a></li>
+							<li><a class="dropdown-item" href="/sound.html">Sound</a></li>
+							<li><a class="dropdown-item" href="#">ADDING MORE </a></li>
+							<li><a class="dropdown-item" href="#">STAY TUNED</a></li>
+						</ul>
+					</div>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="/about/about.html">About us</a>
+				</li>
+
+			</ul>
+		</div>
+	</nav>
+	<!-- Header -->
+	<header class="text-white">
+		<h2>
+			<center>
+				<strong>
+					<i>YourNotes</i> - A concised notes taking application
+				</strong>
+			</center>
+		</h2>
+	</header>
+
+
+	<!-- main content  -->
+	<main class="mx-4 text-white">
+
+		<!-- Main Home page  -->
+		<section>
+			<div class="">
+				<p>
+					At our website, we are committed to providing students with the best possible resources to help them succeed
+					academically. Our notes are created by experienced educators who understand the unique needs of class 10th
+					students. We believe that access to high-quality notes should not be a barrier to academic success, which is
+					why
+					our platform is designed to make it easy for students to find and access the notes they need. Our
+					user-friendly
+					interface allows students to search for notes, browse by subject, and find our most popular and recent
+					additions. Whether you're preparing for an exam or simply looking to deepen your understanding of a subject,
+					our
+					notes are tailored to meet your needs. We are passionate about helping students achieve their academic goals,
+					and we believe that our notes can be an invaluable resource to support their learning journey. Join our
+					community today and start exploring our collection of notes to help you excel in your studies!
+				</p>
+			</div>
+		</section>
+
+		<hr />
+
+		<!-- 		FAQ -->
+		<section>
+			<h3 class="text-center">
+				FAQ - Frequently Asked Questions
+			</h3>
+			<div class="accordion accordion-flush text-white" id="accordionFlushExample"
+				style="--bs-accordion-bg: #0000; --bs-accordion-btn-color: #ffffff; ">
+
+			</div>
+		</section>
+	</main>
+
+	<!-- Bootstrap Javascript  -->
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+		crossorigin="anonymous"></script>
+	<script>
+		const accordion = document.getElementById("accordionFlushExample");
+		let index = 0;
+
+		const questions = [
+			"How do I access the notes on your website?",
+			"Are your notes specific to the syllabus for class 10th?",
+			"Are the notes free to access or is there a fee?",
+			"How do I navigate the website to find the notes I need?",
+		]
+
+		const answers = [
+			"You can access our notes by visiting our website and browsing by subject.",
+			"Yes, our notes are tailored specifically to the syllabus for class 10th students.",
+			"All of our notes are available for free.",
+			"You can browse by subject to find the notes you need.",
+		]
+
+		const loadFAQ = () => {
+			questions.forEach((question) => {
+				accordion.innerHTML += `
+	<div class="accordion-item ">
+		<h2 class="accordion-header">
+		  	<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+							data-bs-target="#flush-collapse${index}" aria-expanded="false"
+		aria-controls="flush-collapse${index}">
+			 				${question}
+					</button>
+			</h2>
+	 <div id="flush-collapse${index}" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+			<div class="accordion-body  text-white">${answers[index]}</div>
+		</div>
+	</div>
+`
+				index++;
+			})
+		}
+
+	</script>
+</body>
+
+</html>
